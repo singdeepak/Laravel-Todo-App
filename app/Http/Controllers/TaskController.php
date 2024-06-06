@@ -7,21 +7,28 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function showAllTask(){
+    public function index(){
         $tasks = Task::orderBy('id', 'desc')->get();
-        return view('list', compact('tasks'));
+        return view('task.list', compact('tasks'));
     }
 
-
-    public function createTask(){
-        return view('list');
+    public function create(){
+        return view('task.create');
     }
 
-    public function storeTask(Request $request){
-        Task::create([
-            'title' => $request->title,
-            'description' => $request->description
-        ]);
-        return 1;
+    public function store(Request $request){
+        dd($request->all);
+    }
+
+    public function edit(Request $request){
+
+    }
+
+    public function update(Request $request){
+
+    }
+
+    public function destroy(Request $request){
+
     }
 }

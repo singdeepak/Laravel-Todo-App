@@ -11,5 +11,9 @@ Route::get('/', function () {
 
 
 // Todo App Routes
-Route::get('task/list', [TaskController::class, 'showAllTask'])->name('showAllTasks');
-Route::post('task/create', [TaskController::class, 'storeTask'])->name('create');
+Route::get('all/tasks', [TaskController::class, 'index'])->name('list');
+Route::get('create/task', [TaskController::class, 'create'])->name('create');
+Route::post('store/task', [TaskController::class, 'store'])->name('store');
+Route::get('edit/task', [TaskController::class, 'edit'])->name('edit');
+Route::put('update/task', [TaskController::class, 'update'])->name('update');
+Route::delete('delete/task', [TaskController::class, 'destroy'])->name('delete');
