@@ -69,18 +69,18 @@ class TaskController extends Controller
 
 
     public function statusDone(Request $request){
-        $status = Task::find(2);
+        $status = Task::find($request->id);
         $status->update([
             'completed' => true
         ]);
-        echo "Done";
+        echo "Task has been completed..!";
     }
 
-    public function statusPending(){
-        $status = Task::find(2);
+    public function statusPending(Request $request){
+        $status = Task::find($request->id);
         $status->update([
             'completed' => false
         ]);
-        echo "Pending";
+        echo "Task is yet to be done..!";
     }
 }

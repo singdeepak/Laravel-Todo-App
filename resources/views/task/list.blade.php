@@ -32,7 +32,7 @@
                             <tr>
                                 <th>Title</th>
                                 <th>Description</th>
-                                <th>Completed</th>
+                                <th>Status</th>
                                 <th>Update</th>
                                 <th>Delete</th>
                             </tr>
@@ -46,12 +46,12 @@
                                     @if ($task->completed)
                                         <div class="form-check form-switch">
                                             <input class="form-check-input switch" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault" checked>
+                                                id="flexSwitchCheckDefault" value="{{ $task->id }}" checked>
                                         </div>
                                     @else
                                         <div class="form-check form-switch">
                                             <input class="form-check-input switch" type="checkbox" role="switch"
-                                                id="flexSwitchCheckDefault">
+                                                id="flexSwitchCheckDefault" value="{{ $task->id }}">
                                         </div>
                                     @endif
                                 </td>
@@ -77,6 +77,25 @@
         </div>
     </div>
 
+
+    {{-- Bootstrap Modal for Alert --}}
+    <div class="modal" tabindex="-1" id="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     {{-- jquery script --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -92,30 +111,37 @@
             let flag = false;
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
             $(document).on('change', '.switch', function() {
+                $taskId = $(this).val();
                 if ($(this).prop('checked')) {
                     flag = true;
+                }else{
+                    flag = false;
                 }
 
                 if (flag === true) {
                     $.ajax({
                         url: "{{ route('task-status-done') }}",
                         type: "POST",
+                        data: { id: $taskId },
                         headers: {
                             'X-CSRF-TOKEN': csrfToken
                         },
                         success: function(response) {
-                            alert(response);
+                            $("#modal .modal-body").html("<h6>" + response + "</h6>");
+                            $("#modal").modal("show");
                         }
                     });
                 } else {
                     $.ajax({
                         url: "{{ route('task-status-pending') }}",
                         type: "POST",
+                        data: { id: $taskId },
                         headers: {
                             'X-CSRF-TOKEN': csrfToken
                         },
                         success: function(response) {
-                            alert(response);
+                            $("#modal .modal-body").html("<h6>" + response + "</h6>");
+                            $("#modal").modal("show");
                         }
                     });
                 }
